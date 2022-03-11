@@ -7,11 +7,11 @@ set -e # exit on any error
 #  reclone from github,
 # make all the remote branches local tracking branches via:
 ########
-# for branch in `git branch -a | grep remotes | grep -v HEAD | grep -v master`; do
+# for branch in `git branch -a | grep remotes | grep -v HEAD | grep -v main`; do
 #    git branch --track ${branch##*/} $branch
 # done
 
-git checkout master
+git checkout main
 cp Gemfile        Gemfile.newest
 cp Gemfile.lock   Gemfile.lock.newest
 cp Guardfile      Guardfile.newest
@@ -22,7 +22,7 @@ eval "$(git for-each-ref --shell --format='branches+=(%(refname))' refs/heads/)"
 for branch in "${branches[@]}"; do
   _BRANCH_NAME="$(echo ${branch} | cut -d/ -f 3-)"  # chop the refs/heads/ off
 
-  if [ "${_BRANCH_NAME}" != "master" ]
+  if [ "${_BRANCH_NAME}" != "main" ]
   then
     git checkout ${_BRANCH_NAME}
 
@@ -56,7 +56,7 @@ done
 
 echo
 echo "Cleaning up tmp files"
-git checkout master
+git checkout main
 rm *.newest
 
 echo "You now must push all of the branches yourself...or you could make a little script"

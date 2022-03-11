@@ -6,7 +6,7 @@ declare -a arr=("activenetwork-dec-2013" "backstopsolutions_2014_nov" "careerbui
 for i in "${arr[@]}"
 do
    cd "${i}"
-   git checkout master
+   git checkout main
    git pull
    cp ~/Projects/classes/exercises/COPYRIGHT .
    cp ~/Projects/classes/exercises/LICENSE .
