@@ -4,3 +4,5 @@ load '../teach/bin/build_course_repo'
 
 # Checkout day 1 exercises
 `git checkout origin/bottles -- bottles/`
+`git commit -m 'add bottles exercise'`
+`git push`

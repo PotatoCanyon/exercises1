@@ -1,0 +1,58 @@
+First: Install latest Ruby, run all the tests, make sure they all pass
+
+######################################
+### run all the tests, look at test_output.txt afterwards
+######################################
+git rev-list --all | xargs -n1 -I@ sh -c 'echo "\n\n===========================" && git checkout -q @ && echo "@ $(git show -s --format=%s @)\n" && ruby bottles/test/bottles_test.rb' &> test_output.txt
+git rev-list --all | xargs -n1 -I@ sh -c 'echo "\n\n===========================" && git checkout -q @ && echo "@ $(git show -s --format=%s @)\n" && ruby farm/test/farm_test.rb' &>> test_output.txt
+git rev-list --all | xargs -n1 -I@ sh -c 'echo "\n\n===========================" && git checkout -q @ && echo "@ $(git show -s --format=%s @)\n" && ruby house/test/house_test.rb' &>> test_output.txt
+git checkout main
+
+
+
+
+=======
+This is just a slightly tweaked copy of what I did in exercises2.  I seem to have already done it to exercises1.
+
+
+
+To update all branches to a new version of minitest in the Gemfile,
+create an expressions.txt file containing the lines:
+  
+  Copyright 2013-20xx TorgqueForge, LLC==>Copyright 2013-20xx Potato Canyon Software, LLC
+  git@github.com:torqueforge==>git@github.com:PotatoCanyon
+  gem 'minitest', '~> 5.11'==>gem 'minitest', '~> 5.15'
+  Your jobis to==>Your job is to
+
+    Notes:
+      minitest is now 5.15
+
+and run
+> git filter-repo --replace-text expressions.txt --force --dry-run
+
+> remove Gemfile.lock from all branches
+> git filter-repo --invert-paths --path Gemfile.lock 
+
+.gitignore
+  .DS_Store
+  Gemfile.lock
+
+to add .gitignore to all branches
+> git filter-repo --force --dry-run --commit-callback "if not commit.parents: commit.file_changes.append(FileChange(b'M', b'.gitignore', b'$(git hash-object -w .gitignore)', b'100644'))"
+> git filter-repo --force           --commit-callback "if not commit.parents: commit.file_changes.append(FileChange(b'M', b'.gitignore', b'$(git hash-object -w .gitignore)', b'100644'))"
+
+
+this deletes the remotes, so afterward:
+> git remote add origin git@github.com:PotatoCanyon/exercises1.git
+> git push origin --force --all
+> git push --set-upstream origin main --force
+> git push origin --force --tags
+
+> git for-each-ref --format="delete %(refname)" refs/original | git update-ref --stdin
+> git reflog expire --expire=now --all
+> git gc --prune=now
+
+
+
+
+
